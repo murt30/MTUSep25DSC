@@ -7,22 +7,32 @@ public class FileHandling {
         String fileName = "/workspace/MTUSep24DSC/02. Java Collections Framework/Lab/hamlet.txt";
 
         try {
-            Scanner in = new Scanner(new File(fileName));
-            int lineNumber = 1;
-            while (in.hasNextLine()) {
-                Scanner lineParser = new Scanner(in.nextLine());
-                // Use any characters other than a-z, A-Z, 0-9 as delimiters
-                lineParser.useDelimiter("[^A-Za-z0-9]+");
-                while (lineParser.hasNext()) {
-                    String word = lineParser.next();
-                    System.out.println("''"+ word + lineNumber);
+            File file = new File(fileName);
+            Scanner scanner = new Scanner(file);
+
+            System.out.println("Words in the file:");
+            int lineNumber = 0;
+            
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                lineNumber++;
+                // Use regex to split on non-word characters (e.g., punctuation, whitespace)
+                String[] words = line.split("[^A-Za-z0-9]+");
+
+                for (String word : words) {
+                    if (!word.isEmpty()) {
+                        System.out.println(word + "\tLine " + lineNumber +  "\n");
+                    }
                 }
-                in.close(); 
-                lineParser.close();
             }
+            
+
+            scanner.close();
         } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + fileName);
             e.printStackTrace();
         }
 
     }
 }
+
